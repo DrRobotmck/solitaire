@@ -1,0 +1,21 @@
+{
+  "name": "solitaire",
+  "version": "0.0.1",
+  "authors": [
+    "DrRobotmck <mckenneth.scott@icloud.com>"
+  ],
+  "description": "libraries for solitaire game",
+  "main": "index.html",
+  "keywords": [
+    "jquery",
+    "jquery-ui"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
