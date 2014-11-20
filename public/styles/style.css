@@ -1,0 +1,50 @@
+section {
+	width: 200px;
+	height: 279px;
+	border: 1px solid black;
+	float: left;
+	margin: 0 1px;
+}
+
+#top-row {
+	width: 1440px;
+	height: 300px;
+}
+
+#gameboard {
+	width: 1440px;
+	height: 800px;
+}
+
+.card {
+	text-align: center;
+}
+
+.suit {
+	width: 190px;
+	height: 190px;
+}
+
+.spade {
+	background: url(http://ih2.redbubble.net/image.12861330.0091/sticker,375x360.png);
+	background-size: contain;
+	background-position: center;
+}
+
+.diamond {
+	background: url(http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=48584493);
+	background-size: contain;
+	background-position: center;
+}
+
+.heart {
+	background: url(http://images.onlinelabels.com/images/clip-art/nicubunu/nicubunu_Card_symbols_Heart.png);
+	background-size: contain;
+	background-position: center;
+}
+
+.club {
+	background: url(http://calftrail.com/images/Sesamouse-Icon-med_large.png);
+	background-size: contain;
+	background-position: center;
+}

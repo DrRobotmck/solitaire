@@ -3,29 +3,32 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Solitaire</title>
+	<link rel="stylesheet" href="public/styles/style.css">
 	<script type="text/javascript" src='public/javascripts/bower_components/jquery/dist/jquery.min.js'></script>
 	<script type="text/javascript" src='public/javascripts/bower_components/jquery-ui/jquery-ui.min.js'></script>
 	<script type="text/javascript" src='public/javascripts/bower_components/handlebars/handlebars.js'></script>
 	<script type="text/javascript" src='public/javascripts/helperFunctions.js'></script>
 	<script type="text/javascript" src='public/javascripts/card.js'></script>
-	<script type="text/javascript" src='public/javascripts/game.js'></script>
 </head>
 <body>
 	<div id="main">
-		<section id='deck'></section>
-		<section class='spade'></section>
-		<section class='diamond'></section>
-		<section class='club'></section>
-		<section class='heart'></section>
-
+		<div id="top-row">
+			<section id='deck'><div class="card"></div></section>
+			<section id='gutter'><div class="card"></div></section>
+			<section class='spacer'><div class="card"></div></section>
+			<section class='spade'><div class="card"></div></section>
+			<section class='diamond'><div class="card"></div></section>
+			<section class='club'><div class="card"></div></section>
+			<section class='heart'><div class="card"></div></section>
+		</div>
 		<div id='gameboard'>
-			<section class="pile col_1"></section>
-			<section class="pile col_2"></section>
-			<section class="pile col_3"></section>
-			<section class="pile col_4"></section>
-			<section class="pile col_5"></section>
-			<section class="pile col_6"></section>
-			<section class="pile col_7"></section>
+			<section class="pile col_1"><div class="card"></div></section>
+			<section class="pile col_2"><div class="card"></div></section>
+			<section class="pile col_3"><div class="card"></div></section>
+			<section class="pile col_4"><div class="card"></div></section>
+			<section class="pile col_5"><div class="card"></div></section>
+			<section class="pile col_6"><div class="card"></div></section>
+			<section class="pile col_7"><div class="card"></div></section>
 		</div>
 	</div>
 
@@ -34,18 +37,16 @@
 		{{#if this.flipped }}
 			<div class="card {{this.color}}">
 				<div class='value'>
-					<p>{{value}}</p>
+					<h1>{{value}}</h1>
 				</div>
 				<div class="suit {{this.suit}}"></div>		
-				<div class='value'>
-					<p>{{this.value}}</p>
-				</div>
 			</div>
 		{{else}}
 			<div class="card">
-				<img src="http://playingcards.wdfiles.com/local--files/bee%3Aacorn/Acorn%20Back%20Red.jpg" alt="">
+				<img src="http://playingcards.wdfiles.com/local--files/bee%3Aacorn/Acorn%20Back%20Red.jpg" width=200>
 			</div>
 		{{/if}}
 	</script>
+	<script type="text/javascript" src='public/javascripts/game.js'></script>
 </body>
 </html>
