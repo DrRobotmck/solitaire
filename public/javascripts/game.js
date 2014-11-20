@@ -52,16 +52,16 @@ var game = {
 												.data('playOn', topCards[cardIdx].canPlayOn)
 												.data('card', topCards[cardIdx].color + topCards[cardIdx].value);
 			$(this).find('.card').replaceWith(cardToRender);
-			$(this).draggable({
+			$(this).find('.card').draggable({
 								revert: 'invalid',
 								snap: '.value',
 								snapMode: 'outer'
 							})
 						 .droppable({
 						 	accept: function(card){
-							 		var dropOn = $(this).find('.card').data('card');
-							 		var chosen = $(card).find('.card').data('playOn');
-							 		console.log(dropOn, chosen)
+							 		var dropOn = $(this).data('card');
+							 		var chosen = $(card).data('playOn');
+							 		console.log(dropOn,chosen)
 							 		return dropOn == chosen;
 								}
 							});

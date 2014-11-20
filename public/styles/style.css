@@ -18,6 +18,8 @@ section {
 
 .card {
 	text-align: center;
+	width: 195px;
+	height: 275px;
 }
 
 .suit {
