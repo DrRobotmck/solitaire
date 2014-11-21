@@ -1,3 +1,5 @@
+.ui-selected { background: #F39814; color: white; }
+
 section {
 	width: 200px;
 	height: 279px;
@@ -13,13 +15,20 @@ section {
 
 #gameboard {
 	width: 1440px;
-	height: 800px;
+	/*height: 800px;*/
+}
+#gameboard section {
+	width: 200px;
+	height: 100%;
+	min-height: 279px;
 }
 
 .card {
 	text-align: center;
 	width: 195px;
 	height: 275px;
+	background: cornsilk;
+	border: 1px indianred solid;
 }
 
 .suit {

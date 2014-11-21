@@ -41,30 +41,56 @@ var game = {
 		var deck = $('#deck');
 		var gutter = $('#gutter');
 		var sections = $("#gameboard section");
-		var cardTemplate = Handlebars.compile($('#card-template').html());
+		cardTemplate = Handlebars.compile($('#card-template').html());
+
 		topCards[0].flipped = false;
 
+		var gutterCard = $(cardTemplate(topCards[1]))
+										.data('playOn', topCards[1].canPlayOn)
+										.data('card', topCards[1].color + topCards[1].value);
+		addProperties(gutterCard)
+
 		deck.find('.card').replaceWith(cardTemplate(topCards[0]));
-		gutter.find('.card').replaceWith(cardTemplate(topCards[1]))
+		gutter.find('.card').replaceWith(gutterCard)
+		
+		// gutter.find('.card').draggable({
+		// 						revert: 'invalid',
+		// 						snap: '.value',
+		// 						snapMode: 'outer',
+		// 						stack: '.card',
+		// 						appendTo: 'body'
+		// 					})
+		// 				  .droppable({
+		// 				 		accept: function(card){
+		// 					 		var dropOn = $(this).data('card');
+		// 					 		var chosen = $(card).data('playOn');
+		// 					 		console.log(dropOn,chosen)
+		// 					 		return dropOn == chosen;
+		// 						},
+		// 						drop: function(event, ui) {
+		// 							$(ui.helper).appendTo(this);
+		// 							$(ui.helper).css('position', 'static');
+		// 						}
+		// 					})
+							
 		sections.each(function(index) {
 			var cardIdx = index + 6;
 			var cardToRender = $(cardTemplate(topCards[cardIdx]))
 												.data('playOn', topCards[cardIdx].canPlayOn)
 												.data('card', topCards[cardIdx].color + topCards[cardIdx].value);
 			$(this).find('.card').replaceWith(cardToRender);
-			$(this).find('.card').draggable({
-								revert: 'invalid',
-								snap: '.value',
-								snapMode: 'outer'
-							})
-						 .droppable({
-						 	accept: function(card){
-							 		var dropOn = $(this).data('card');
-							 		var chosen = $(card).data('playOn');
-							 		console.log(dropOn,chosen)
-							 		return dropOn == chosen;
-								}
-							});
+			addProperties($(this).find('.card'));
+			// $(this).find('.card').draggable({
+			// 					revert: 'invalid',
+			// 					snap: '.value',
+			// 					snapMode: 'outer',
+			// 					stack: '.card',
+			// 					appendTo: 'body'
+			// 				})
+			// 			  .droppable({
+			// 			 		accept: accept,
+			// 					drop: drop
+			// 				})
 		})
 	},
 	checkWin: function() {
@@ -111,11 +137,5 @@ var game = {
 
 $(function(){
 	game.start();
-})
-
-$('body').on('click', '.card', function() {
-	if ($(this).parent().hasClass('col_1')) {
-		var card = game.board.col_1[game.board.col_1.length - 1];
-		console.log(card, "hi")
-	}
+	// $('section').sortable({connectWith: '.pile'}).disableSelection();
 })
