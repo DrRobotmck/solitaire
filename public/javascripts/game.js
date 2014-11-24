@@ -27,9 +27,9 @@ var game = {
 	},
 	setColumns: function(columnCards) {
 		for (var i = 7; i > 0; i--) {
-			this.board['col_'+ i] = columnCards.splice(0, i)
+			this.board['col_'+ i] = columnCards.splice(0, i);
 		}
-		return 'true'
+		return 'true';
 	},
 	setGameDeck: function(deck) {
 		this.board.deck = deck;
@@ -37,7 +37,6 @@ var game = {
 	},
 	render: function() {
 		var topCards = this.getTopCards();
-		console.log(topCards)
 		var deck = $('#deck');
 		var gutter = $('#gutter');
 		var sections = $("#gameboard section");
@@ -47,57 +46,25 @@ var game = {
 
 		var gutterCard = $(cardTemplate(topCards[1]))
 										.data('playOn', topCards[1].canPlayOn)
-										.data('card', topCards[1].color + topCards[1].value);
-		addProperties(gutterCard)
-
+										.data('card', topCards[1].currentCard);
 		deck.find('.card').replaceWith(cardTemplate(topCards[0]));
-		gutter.find('.card').replaceWith(gutterCard)
-		
-		// gutter.find('.card').draggable({
-		// 						revert: 'invalid',
-		// 						snap: '.value',
-		// 						snapMode: 'outer',
-		// 						stack: '.card',
-		// 						appendTo: 'body'
-		// 					})
-		// 				  .droppable({
-		// 				 		accept: function(card){
-		// 					 		var dropOn = $(this).data('card');
-		// 					 		var chosen = $(card).data('playOn');
-		// 					 		console.log(dropOn,chosen)
-		// 					 		return dropOn == chosen;
-		// 						},
-		// 						drop: function(event, ui) {
-		// 							$(ui.helper).appendTo(this);
-		// 							$(ui.helper).css('position', 'static');
-		// 						}
-		// 					})
+		gutter.find('.card').replaceWith(gutterCard);
+		addProperties(gutterCard);
 							
 		sections.each(function(index) {
 			var cardIdx = index + 6;
 			var cardToRender = $(cardTemplate(topCards[cardIdx]))
 												.data('playOn', topCards[cardIdx].canPlayOn)
-												.data('card', topCards[cardIdx].color + topCards[cardIdx].value);
+												.data('card', topCards[cardIdx].currentCard);
 			$(this).find('.card').replaceWith(cardToRender);
 			addProperties($(this).find('.card'));
-			// $(this).find('.card').draggable({
-			// 					revert: 'invalid',
-			// 					snap: '.value',
-			// 					snapMode: 'outer',
-			// 					stack: '.card',
-			// 					appendTo: 'body'
-			// 				})
-			// 			  .droppable({
-			// 			 		accept: accept,
-			// 					drop: drop
-			// 				})
 		})
 	},
 	checkWin: function() {
-		spades = this.board.spades.count
-		diamonds = this.board.diamonds.count
-		clubs = this.board.clubs.count
-		hearts = this.board.hearts.count
+		spades = this.board.spades.count;
+		diamonds = this.board.diamonds.count;
+		clubs = this.board.clubs.count;
+		hearts = this.board.hearts.count;
 		if (spades + diamonds + clubs + hearts == 52) { 
 			alert("Congratulations! You've Won");
 			return true; 
@@ -116,9 +83,9 @@ var game = {
 				card_1.flipped = true;
 				topCards.forEach(function(card_2, index, array) {
 					if (card_2) {
-						if (card_1.canPlayOn == (card_2.color + card_2.value)) {
+						if (card_1.canPlayOn == (card_2.currentCard)) {
 							card_1.playable = true;
-							isPlayable.push(card_1.color + card_1.value)
+							isPlayable.push(card_1.currentCard);
 						}
 					}
 				})
@@ -128,14 +95,42 @@ var game = {
 	getTopCards: function() {
 		var topCards = [];
 		for (pile in this.board) {
-			topCards.push(this.board[pile][0])
+			topCards.push(this.board[pile][0]);
 		}
 		return topCards;
+	},
+	makeMove: function(colFrom, colTo) {
+		var fromCol = this.board[colFrom];
+		var toCol = this.board[colTo];
+		var dragCard = fromCol[0];
+		var dropCard = toCol[0];
+		if (/spade|diamond|club|heart/.test(toCol)){
+			if (dragCard.suit + dragCard.value == (dropCard.suit + (dropCard.value + 1))) {
+				var cardToMove = fromCol.shift();
+				cardToMove.playable = false;
+				cardToMove.found = true;
+				toCol.unshift(fromCol.shift());
+			}
+		} else if (dragCard.canPlayOn == dropCard.currentCard) {
+			if (dropCard.playable) {
+				var cardToMove = fromCol.shift();
+				cardToMove.playable = false;
+				toCol.unshift(cardToMove);
+			}
+		} else if (dropCard.length == 0 && dragCard.value == 13) {
+			toCol.push(fromCol.shift());
+		}
+		if (this.checkLoss()){
+			console.log('Game Over');
+		} else if (this.checkWin()) {
+			console.log('Winner');
+		} else {
+			this.setPlayableCards();
+		}
 	},
 	cardTemplate: Handlebars.compile($('#card-template').html())
 };
 
 $(function(){
 	game.start();
-	// $('section').sortable({connectWith: '.pile'}).disableSelection();
 })
