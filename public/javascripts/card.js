@@ -17,7 +17,7 @@ var Deck = function() {
 			["diamond", "red"], 
 			["heart", "red"] 
 		];
-		var reverseColor = {"black": "red", "red":"black"};
+		var reverseColor = {"black": "red", "red": "black"};
 		this.cards = [];
 
 		suits.forEach(function(suit, index, array) {

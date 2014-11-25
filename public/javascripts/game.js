@@ -30,7 +30,7 @@ var game = {
 		for (var i = 7; i > 0; i--) {
 			this.board['col_'+ i] = columnCards.splice(0, i);
 		}
-		return 'true';
+		return true;
 	},
 	setGameDeck: function(deck) {
 		this.board.deck = deck;
@@ -76,22 +76,22 @@ var game = {
 
 		var spadeCard = $(this.cardTemplate(topCards[2]))
 											.data('playOn', topCards[2].canPlayOn)
-											.data('card', topCards[2].currentCard);;
+											.data('card', topCards[2].currentCard);
 		spade.find('.card').replaceWith(spadeCard);
 		
 		var diamondCard = $(this.cardTemplate(topCards[3]))
 											.data('playOn', topCards[3].canPlayOn)
-											.data('card', topCards[3].currentCard);;
+											.data('card', topCards[3].currentCard);
 		diamond.find('.card').replaceWith(diamondCard);
 		
 		var clubCard = $(this.cardTemplate(topCards[4]))
 										.data('playOn', topCards[4].canPlayOn)
-										.data('card', topCards[4].currentCard);;
+										.data('card', topCards[4].currentCard);
 		club.find('.card').replaceWith(clubCard);
 		
 		var heartCard = $(this.cardTemplate(topCards[5]))
 										.data('playOn', topCards[5].canPlayOn)
-										.data('card', topCards[5].currentCard);;
+										.data('card', topCards[5].currentCard);
 		heart.find('.card').replaceWith(heartCard);
 
 	},
@@ -119,7 +119,7 @@ var game = {
 				topCards.forEach(function(card_2, index, array) {
 					if (card_2) {
 						if (card_1.canPlayOn == (card_2.currentCard)) {
-							card_1.playable = true;
+							card_2.playable = true;
 							isPlayable.push(card_1.currentCard);
 						}
 					}
@@ -140,6 +140,7 @@ var game = {
 		var toCol = this.board[colTo];
 		var dragCard = fromCol[0];
 		var dropCard = toCol[0];
+		console.log(dropCard)
 		if (/spade|diamond|club|heart/.test(colTo)){
 			if (dragCard.suit + dragCard.value == (dropCard.suit + (dropCard.value + 1))) {
 				cardToMove = fromCol.shift();
@@ -147,15 +148,16 @@ var game = {
 				cardToMove.found = true;
 				toCol.unshift(cardToMove);
 			}
+		} else if (dropCard.currentCard == 'blank' && dragCard.value == 13) {
+			toCol.unshift(fromCol.shift());
 		} else if (dragCard.canPlayOn == dropCard.currentCard) {
 			if (dropCard.playable) {
 				cardToMove = fromCol.shift();
 				cardToMove.playable = false;
 				toCol.unshift(cardToMove);
 			}
-		} else if (dropCard.length === 0 && dragCard.value == 13) {
-			toCol.push(fromCol.shift());
 		}
+		this.checkForBlanks();
 		if (this.checkLoss()){
 			console.log('Game Over');
 		} else if (this.checkWin()) {
@@ -170,6 +172,13 @@ var game = {
 		deck[0].flipped = true;
 		deck.push(gutter.shift());
 		gutter.push(deck.shift());
+	},
+	checkForBlanks: function() {
+		for(var pile in this.board) {
+			if (!this.board[pile][0]) {
+				this.board[pile].push(new Card(null, "blank", "", ""));
+			}
+		}
 	},
 	cardTemplate: Handlebars.compile($('#card-template').html())
 };
